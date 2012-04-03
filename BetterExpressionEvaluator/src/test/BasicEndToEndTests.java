@@ -1,45 +1,47 @@
 package test;
 
 import exception.InvalidOperandException;
+import exception.MalformedDecimalException;
 import exception.MalformedParenthesisException;
+import exception.MalformedTokenException;
 import suite.Expression;
 import junit.framework.TestCase;
 
 public class BasicEndToEndTests extends TestCase {
 
-	public void testEmptyExpression() throws MalformedParenthesisException, InvalidOperandException {
+	public void testEmptyExpression() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
 		
-		runExpressionTest("", 0);
+		runExpressionTest("", 0.0);
 	}
 	
-	public void testBasicAddition() throws MalformedParenthesisException, InvalidOperandException {
+	public void testBasicAddition() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
 		
-		runExpressionTest("30+15", 45);
+		runExpressionTest("30+15", 45.0);
 	}
 	
-	public void testBasicSubtraction() throws MalformedParenthesisException, InvalidOperandException {
+	public void testBasicSubtraction() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
 	
-		runExpressionTest("30-15", 15);
+		runExpressionTest("30-15", 15.0);
 	}
 	
-	public void testBasicMultiplication() throws MalformedParenthesisException, InvalidOperandException {
+	public void testBasicMultiplication() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
 		
-		runExpressionTest("30*15", 450);
+		runExpressionTest("30*15", 450.0);
 	}
 	
-	public void testBasicEmptyParens() throws MalformedParenthesisException, InvalidOperandException {
+	public void testBasicEmptyParens() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
 		
-		runExpressionTest("()", 0);
+		runExpressionTest("()", 0.0);
 	}
 	
-	public void testBasicTrivialEmptyParens() throws MalformedParenthesisException, InvalidOperandException {
+	public void testBasicTrivialEmptyParens() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
 		
-		runExpressionTest("(30)",30);
+		runExpressionTest("(30)",30.0);
 	}
 	
-	private void runExpressionTest(String expression, int value) throws MalformedParenthesisException, InvalidOperandException {
+	private void runExpressionTest(String expression, Double value) throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
 		
 		Expression e = new Expression(expression);
-		assertEquals(Integer.valueOf(value),e.getExpressionValue());
+		assertEquals(Double.valueOf(value),e.getExpressionValue());
 	}
 }

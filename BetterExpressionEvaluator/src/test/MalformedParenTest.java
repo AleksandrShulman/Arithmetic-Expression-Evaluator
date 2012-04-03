@@ -43,14 +43,16 @@ public class MalformedParenTest extends TestCase {
 		} catch (MalformedParenthesisException mpe) {}
 	}
 	
+	
+	
 	public void testIncorrectlyOrderedParenthesisInsideNormalParenthesis() throws Exception {
 		
-		String openParenString = "( 3 + 5  + ) 8 + 9 ( )";
+		String openParenString = "( 3 + 5 + ) 8 + 9 ( )";
 		try {
 			new Expression(openParenString);
 			fail("Did not throw exception");
 			
-		} catch (MalformedParenthesisException mpe) {}
+		} catch (IllegalArgumentException ile) {}
 	}
 }
 

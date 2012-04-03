@@ -8,9 +8,13 @@ public enum Operation {
 	MULTIPLICATION('*'),
 	ADDITION('+'),
 	SUBTRACTION('-'),
+	NEGATION('-'),
+	DIVISION('/'),
+	EXPONENTIATION('^'),
 	NO_OP(' ');
 	
 	private char underlyingCharacter;
+	TokenType type;
 	
 	Operation(char c) {
 		
@@ -32,5 +36,15 @@ public enum Operation {
 	private char getUnderlyingCharacter() {
 		
 		return underlyingCharacter;
+	}
+	
+	public TokenType getTokenType() {
+		
+		if(this==Operation.NEGATION) {
+			
+			return TokenType.NEGATOR;
+		} else {
+			return TokenType.OPERATION;
+		}
 	}
 }

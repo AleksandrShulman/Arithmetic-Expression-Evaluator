@@ -4,68 +4,59 @@ import java.util.LinkedList;
 import java.util.List;
 
 import suite.Expression;
-import suite.Operation;
+import suite.Token;
 import exception.InvalidOperandException;
+import exception.MalformedDecimalException;
 import exception.MalformedParenthesisException;
+import exception.MalformedTokenException;
 import junit.framework.TestCase;
 
 public class SubstitutionIntoMultiplicationTest extends TestCase {
 
-	public void testSimpleMultiplication() throws MalformedParenthesisException, InvalidOperandException {
+	public void testSimpleMultiplication() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, NumberFormatException, MalformedDecimalException {
 		
 		String basicString = "4*3";
-		final List<Object> expectedList = new LinkedList<Object>();
-		expectedList.add(Integer.valueOf("12"));
+		final List<Token> expectedList = new LinkedList<Token>();
+		expectedList.add(new Token(Integer.valueOf("12")));
 		
-		List<Object> listUnderTest = Expression.tokenizeImpl(basicString);
+		List<Token> listUnderTest = Expression.tokenizeImpl(basicString);
 		
 		Expression.performMultiplicationSubstitution(listUnderTest);
-		SubstitutionIntoSubtractionTest.compareTwoLists(listUnderTest, expectedList);
+		Token.equateTokenList(listUnderTest, expectedList);
 	}
 	
-	public void testMultipleTermMultiplication() throws MalformedParenthesisException, InvalidOperandException {
+	public void testMultipleTermMultiplication() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
 		
 		String basicString = "4*3*5";
-		final List<Object> expectedList = new LinkedList<Object>();
-		expectedList.add(Integer.valueOf("60"));
+		final List<Token> expectedList = new LinkedList<Token>();
+		expectedList.add(new Token(Integer.valueOf("60")));
 		
-		List<Object> listUnderTest = Expression.tokenizeImpl(basicString);
+		List<Token> listUnderTest = Expression.tokenizeImpl(basicString);
 		
 		Expression.performMultiplicationSubstitution(listUnderTest);
-		SubstitutionIntoSubtractionTest.compareTwoLists(listUnderTest, expectedList);
-		
+		Token.equateTokenList(listUnderTest, expectedList);
 	}
 	
-	public void testMixedMultiplicationAdditionAndSubtraction()  throws MalformedParenthesisException, InvalidOperandException {
+	public void testMixedMultiplicationAdditionAndSubtraction()  throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
 		
 		String basicString = "4-3*5-3*2";
-		final List<Object> expectedList = new LinkedList<Object>();
-		expectedList.add(Integer.valueOf("4"));
-		expectedList.add(Operation.SUBTRACTION);
-		expectedList.add(Integer.valueOf("15"));
-		expectedList.add(Operation.SUBTRACTION);
-		expectedList.add(Integer.valueOf("6"));
+		final List<Token> expectedList = Expression.tokenizeImpl("4-15-6");
 		
-		List<Object> listUnderTest = Expression.tokenizeImpl(basicString);
+		List<Token> listUnderTest = Expression.tokenizeImpl(basicString);
 		
 		Expression.performMultiplicationSubstitution(listUnderTest);
-		SubstitutionIntoSubtractionTest.compareTwoLists(listUnderTest, expectedList);
+		Token.equateTokenList(listUnderTest, expectedList);
 	}
 	
-	public void testMixedHeavyMultiplicationAdditionAndSubtraction()  throws MalformedParenthesisException, InvalidOperandException {
+	public void testMixedHeavyMultiplicationAdditionAndSubtraction()  throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
 		
 		String basicString = "4-3*5*2-3*2";
-		final List<Object> expectedList = new LinkedList<Object>();
-		expectedList.add(Integer.valueOf("4"));
-		expectedList.add(Operation.SUBTRACTION);
-		expectedList.add(Integer.valueOf("30"));
-		expectedList.add(Operation.SUBTRACTION);
-		expectedList.add(Integer.valueOf("6"));
+		final List<Token> expectedList = Expression.tokenizeImpl("4-30-6");
 		
-		List<Object> listUnderTest = Expression.tokenizeImpl(basicString);
+		List<Token> listUnderTest = Expression.tokenizeImpl(basicString);
 		
 		Expression.performMultiplicationSubstitution(listUnderTest);
-		SubstitutionIntoSubtractionTest.compareTwoLists(listUnderTest, expectedList);
+		Token.equateTokenList(listUnderTest, expectedList);
 	}
 		
 }

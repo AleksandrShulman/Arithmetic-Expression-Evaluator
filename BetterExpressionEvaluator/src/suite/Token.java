@@ -33,6 +33,8 @@ public class Token {
 			// check if all the items are digits...if so, then it's a double
 			boolean isDigit = true;
 			boolean haveJustSeenDecimal = false; //next item better be a digit
+			 
+			int i = 0;
 			for (Character c : o.toString().toCharArray()) {
 
 				if(haveJustSeenDecimal && !Character.isDigit(c)) {
@@ -46,10 +48,17 @@ public class Token {
 				}
 				
 				if(c=='.') {
+					
+					if(i == o.toString().length()-1) {
+						//if this is the last character
+						throw new MalformedDecimalException();
+					}
 					haveJustSeenDecimal = true;
+				
 				} else {
 					haveJustSeenDecimal=false;
 				}
+				i++;
 			}
 
 			if (!isDigit) {
@@ -93,6 +102,16 @@ public class Token {
 
 	private void setUnderlyingObject(Object underlyingObject) {
 		this.underlyingObject = underlyingObject;
+		if(underlyingObject instanceof Operation) {
+			
+			if(((Operation) underlyingObject).getTokenType()==TokenType.NEGATOR) {
+				
+				this.setType(TokenType.NEGATOR);
+			} else {
+				
+				this.setType(TokenType.OPERATION);
+			}
+		}
 	}
 
 	public Object getUnderlyingObject() {
