@@ -1,5 +1,8 @@
 package suite;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.EmptyStackException;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,17 +15,51 @@ import exception.MalformedTokenException;
 
 public class Expression {
 
+	public static void main(String args[]) throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
+		
+		while(true) {
+		System.out.print("Welcome. Please enter an expression: ");
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+	      String inputExpression = null;
+
+	      //  read the username from the command-line; need to use try/catch with the
+	      //  readLine() method
+	      try {
+	         inputExpression = br.readLine();
+	      } catch (IOException ioe) {
+	         System.out.println("IO error trying to read your name!");
+	         System.exit(1);
+	      }
+
+	      if(inputExpression.equals("exit") || inputExpression.equals("Exit"))
+	    	  System.exit(0);
+	      
+	      try {
+	      Expression e = new Expression(inputExpression);
+	      
+	      	System.out.println("Evaluates to: " + Double.valueOf(e.getExpressionValue()));
+	      } catch (IllegalArgumentException e) {
+	    	  
+	    	  System.out.println(e.getLocalizedMessage());
+	      }
+	      
+		}
+	}
+	
 	LinkedList<Token> expressionList;
 	final String expressionString;
 	Double expressionValue;
 	boolean hasBeenEvaluated = false;
 	final static char[] WhiteSpace = { '\n', '\r', '\f', '\t',' '};
+	public final static String illegalArgString = "Baahh! Bad input. You suck.";
 	
 	public Expression(String expressionString) throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
 		
 		if(expressionString==null) {
 			
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(illegalArgString);
 		}
 		
 		this.expressionString = removeWhiteSpace(expressionString.toCharArray());
@@ -224,6 +261,7 @@ public class Expression {
 			tokenize();
 		}
 		
+		//Magic happens here (i.e. PEMDAS)
 		performParentheticalExpressionEvaluation();
 		performExponentiationSubstitution();
 		performMultiplicationAndDivisionSubstitution();
@@ -657,9 +695,7 @@ public class Expression {
 			//add a new expression made up of tokens
 			//j++ represents the string including the token
 			LinkedList<Token> newTokenList = new LinkedList<Token>();
-			
-			//TODO: Fix this mess
-			
+				
 			for(int p=0; p<numberOfNegators; p++) {
 					newTokenList.add(2*p, new Token(-1));
 					newTokenList.add(2*p + 1, new Token(Operation.MULTIPLICATION));

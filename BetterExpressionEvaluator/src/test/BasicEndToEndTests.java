@@ -9,6 +9,20 @@ import junit.framework.TestCase;
 
 public class BasicEndToEndTests extends TestCase {
 
+	public void testNullInputGivesCorrectErrorMessage() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
+		
+		String badExpressionString = null;
+		
+		try {
+		
+			Expression badExpression = new Expression(badExpressionString);
+			fail("Expression not thrown!?");
+		} catch (IllegalArgumentException e) {
+			
+			assertEquals(e.getLocalizedMessage(), Expression.illegalArgString);
+		}
+	}
+	
 	public void testEmptyExpression() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
 		
 		runExpressionTest("", 0.0);

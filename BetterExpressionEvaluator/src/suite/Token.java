@@ -71,7 +71,7 @@ public class Token {
 						|| !Expression.isParenExpression(expString
 								.toCharArray())) {
 					throw new IllegalArgumentException(
-							"Parenthetical expression without one or more parenthesis");
+							"Cannot parse input. Try again.");
 				}
 				Expression.verifyValidParenStructuring(expString);
 				setUnderlyingObject(o);

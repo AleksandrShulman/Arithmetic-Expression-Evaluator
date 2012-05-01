@@ -24,6 +24,48 @@ public class MixedEndToEndTests extends TestCase {
 		runExpressionTest("(30*2+(4-((2)))*3-5*93)",-399.0);
 	}
 	
+	public void testNeatNegativeExponentation() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
+		
+		runExpressionTest("-1^(-1)",-1.0);
+		runExpressionTest("-1.1^(-1)",-0.9090909090909091);	
+	}
+	
+	public void testMessyNegativeExponentiation() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
+		
+		runExpressionTest("1.1^(-1.1)",0.900467507467747);
+		runExpressionTest("-1.1^(-1.1)",-0.9090909090909091);
+		
+	}
+	
+	public void testVladaExample() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
+		
+		runExpressionTest("-6.3^(10.149001366)",44.0);
+		runExpressionTest("-6.3^(5.710961815)^(1.33)",44.0);
+		runExpressionTest("-6.3^(3/5^(-.4))^(1.33)",44.0);
+		runExpressionTest("-6.3^(3/5^-.4)^(1.33)",44.0);
+		runExpressionTest("-6.3^(3/5^---.4)^(1.33)",44.0);
+		runExpressionTest("-6.3^(3/5^---.4)^(4/3)",44.0);
+		runExpressionTest("-6.3^(3/5^---.4*(5))^(4/3)",44.0);
+		runExpressionTest("(-6.3^(3/5^---.4*(5))^(4/3))",44.0);
+		runExpressionTest("(-6.3^(3/5^---.4*(5))^(----4/3))",44.0);
+		runExpressionTest("(-6.3^(3/5^---.4*(5))^(----4/3))*-9",44.0);
+		runExpressionTest("(-6.3^(3/5^---.4*(5))^(----4/3))*-9*(-2)",44.0);
+		runExpressionTest("(-6.3^(3/5^---.4*(5))^(----4/3))*-9*(2-4)",44.0);
+		runExpressionTest("(-6.3^(3/5^---.4*(5))^(----4/3))*-9*(2-4)+(-7)",44.0);
+		runExpressionTest("(-6.3^(3/5^---.4*(5))^(----4/3))*-9*(2-4)+(-7)+.01",44.0);
+		runExpressionTest("-((-6.3^(3/5^---.4*(5))^(----4/3))*-9*(2-4)+(-7)+.01)",44.0);
+	}
+	
+	public void testVladaExampleEasy() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
+		runExpressionTest("5^---.4", 0.5253055608807534);
+		runExpressionTest("4",4.0);
+		runExpressionTest("-4",-4.0);
+		runExpressionTest("--4",4.0);
+		runExpressionTest("---4",-4.0);
+		runExpressionTest("----4",4.0);
+	}
+	
+	
 	public void testPartialMixedParenExpressionMixedDecimal() throws MalformedParenthesisException, InvalidOperandException, MalformedTokenException, MalformedDecimalException {
 		
 		runExpressionTest("(30*2.0+(4-((2.0)))*3-5*93)",-399.0);
